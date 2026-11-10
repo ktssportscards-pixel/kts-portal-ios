@@ -1,0 +1,44 @@
+# ───────────────────────────────────────────────────────────────
+# SECRETS & SIGNING — NEVER commit these. A leaked keystore lets
+# anyone sign fake updates to the app; keystore.properties holds the
+# signing passwords. These stay on Kevin's machine + off-machine backup.
+# ───────────────────────────────────────────────────────────────
+*.keystore
+*.jks
+kts-release.keystore
+**/keystore.properties
+**/local.properties
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+*.pem
+.env
+.env.*
+!.env.example
+**/.env
+
+# Dependencies
+node_modules/
+
+# Build output (xcarchives, gradle, IPAs, APKs — all regenerated)
+build/
+**/.gradle/
+DerivedData/
+*.xcarchive
+*.ipa
+*.aab
+*.apk
+*.ap_
+*.dex
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+# CocoaPods (if ever used)
+Pods/
+
+# OS
+.DS_Store

@@ -1,0 +1,13 @@
+{
+  "appId": "com.ktscollectibles.portal",
+  "appName": "KTS Portal",
+  "webDir": "www",
+  "server": {
+    "url": "https://portal.ktscollectibles.com",
+    "cleartext": false
+  },
+  "ios": {
+    "contentInset": "always",
+    "limitsNavigationsToAppBoundDomains": false
+  }
+}
