@@ -41,18 +41,26 @@ open ios/App/App.xcodeproj
 Pick the **App** scheme and run on a simulator. For a **device** build, sign with
 **your own** Apple Developer team under Signing & Capabilities.
 
-### Preview the UI without a backend
+### Demo mode — try the whole app with no backend
 
-You don't need a login or the live server to see most of the app. In
-`PortalCore.swift`, flip the DEBUG preview flag:
+You don't need a login or the live server. In `PortalCore.swift`, flip the DEBUG
+flag:
 
 ```swift
 var KTS_PREVIEW_MOCK = true
 ```
 
-Run a **Debug** build on a simulator and the app lands on Home, populated with
-sample submissions (fictional data in `PortalMock.swift`) — good for working on
-Home, Review Cards, and Past Submissions. Set it back to `false` before committing.
+Run a **Debug** build and the app boots straight to Home — and **the scanner
+works end to end**, offline:
+
+- **On a device**, point the camera at a graded slab's barcode.
+- **On the Simulator** (no camera), tap the camera-off control, then **Enter
+  manually** and type any 7–13 digit number as a cert.
+
+Each cert gets a deterministic "normal weekend" offer — most are a **BUY**, a few
+are a **PASS** — and you can submit a batch and watch it land under Review / Past
+as accepted / pending / rejected. It's all fictional sample data in
+`PortalMock.swift`. **Set the flag back to `false` before committing.**
 
 ## Contributing
 

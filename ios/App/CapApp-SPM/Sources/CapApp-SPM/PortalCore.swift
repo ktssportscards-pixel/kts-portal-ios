@@ -319,22 +319,46 @@ public final class API {
     }
 
     public func price(cert: String) async throws -> SellerView {
+        #if DEBUG
+        if KTS_PREVIEW_MOCK { await ktsMockDelay(); return ktsMockPrice(cert: cert) }
+        #endif
         struct R: Decodable { let results: [SellerView] }
         let r: R = try decode(try await request("price", method: "POST", body: ["cert": cert]))
         guard let first = r.results.first else { throw APIError(message: "No price came back.") }
         return first
     }
     public func deleteSubmission(id: Int) async throws {
+        #if DEBUG
+        if KTS_PREVIEW_MOCK { ktsMockDelete(id: id); return }
+        #endif
         _ = try await request("submission/\(id)", method: "DELETE")
     }
     public func submit(certs: [String]) async throws -> SubmitResponse {
-        try decode(try await request("submit", method: "POST", body: ["certs": certs]))
+        #if DEBUG
+        if KTS_PREVIEW_MOCK { await ktsMockDelay(); return ktsMockSubmit(certs: certs) }
+        #endif
+        return try decode(try await request("submit", method: "POST", body: ["certs": certs]))
     }
-    public func mine() async throws -> MineResponse { try decode(try await request("mine")) }
-    public func rates() async throws -> RatesResponse { try decode(try await request("rates")) }
+    public func mine() async throws -> MineResponse {
+        #if DEBUG
+        if KTS_PREVIEW_MOCK { return ktsMockMine() }
+        #endif
+        return try decode(try await request("mine"))
+    }
+    public func rates() async throws -> RatesResponse {
+        #if DEBUG
+        if KTS_PREVIEW_MOCK { return ktsMockRates() }
+        #endif
+        return try decode(try await request("rates"))
+    }
 
     // Shipping: where to mail this week's approved cards + this week's tracking/delivery state.
-    public func shipping() async throws -> ShippingResponse { try decode(try await request("shipping")) }
+    public func shipping() async throws -> ShippingResponse {
+        #if DEBUG
+        if KTS_PREVIEW_MOCK { return ktsMockShipping() }
+        #endif
+        return try decode(try await request("shipping"))
+    }
     public func submitTracking(_ tracking: String) async throws -> ShippingTrackingResponse {
         try decode(try await request("shipping/tracking", method: "POST", body: ["tracking": tracking]))
     }
@@ -396,9 +420,9 @@ public final class AppState: ObservableObject {
 
     public func boot() async {
         #if DEBUG
-        if KTS_PREVIEW_MOCK {   // sim-only preview (no backend): land on seller Home with sample data; Admin still reachable
-            username = "mikey_slabs"; isAdmin = true; phase = .app; screen = .home
-            submissions = ktsMockDecode(ktsMockMineJSON) ?? []
+        if KTS_PREVIEW_MOCK {   // offline demo (no backend/login): land on Home; the scanner works via PortalMock
+            username = "demo"; phase = .app; screen = .home
+            submissions = ktsMockMine().submissions
             return
         }
         #endif

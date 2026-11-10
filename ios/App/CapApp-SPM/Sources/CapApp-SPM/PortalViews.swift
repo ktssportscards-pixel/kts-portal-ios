@@ -1353,6 +1353,28 @@ struct PokemonLaneCard: View {
 }
 
 
+// Headline stat tile used on the Home hero (value + label + optional sub, colored accent bar).
+struct KTSStatTile: View {
+    let value: String; let label: String; let extra: String; let color: Color
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(value).font(.system(size: 22, weight: .heavy)).foregroundColor(color)
+                .monospacedDigit().lineLimit(1).minimumScaleFactor(0.5)
+            Text(label.uppercased()).font(.system(size: 10, weight: .bold)).foregroundColor(KTS.muted)
+                .padding(.top, 9).lineLimit(1).minimumScaleFactor(0.7)
+            if !extra.isEmpty {
+                Text(extra).font(.system(size: 11)).foregroundColor(KTS.muted).padding(.top, 2).lineLimit(1)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 13).padding(.leading, 14).padding(.trailing, 11)
+        .background(KTS.panel2.opacity(0.7))
+        .overlay(alignment: .leading) { Rectangle().fill(color).frame(width: 3) }
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(KTS.line.opacity(0.5)))
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+    }
+}
+
 // A muted requirement chip on the Rates page, e.g. "PSA 7+" (grade) or "CL 3+" (confidence).
 struct ReqPill: View {
     let text: String
